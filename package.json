@@ -1,0 +1,42 @@
+{
+  "name": "level-iterator",
+  "version": "0.0.1",
+  "description": "decoding iterator for levelup instances",
+  "license": "MIT",
+  "author": {
+    "name": "Vincent Weevers",
+    "email": "mail@vincentweevers.nl"
+  },
+  "main": "lib/index.js",
+  "files": [
+    "lib/index.js"
+  ],
+  "scripts": {
+    "build": "babel -d lib src",
+    "test": "tape lib/test/*.js",
+    "build-test": "npm run build && npm test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "leveldown": "~1.4.4",
+    "levelup": "~1.3.1",
+    "memdown": "~1.1.2",
+    "tape": "~4.4.0",
+    "test-level": "0.0.2"
+  },
+  "keywords": [
+    "decode",
+    "decoding",
+    "iterator",
+    "level",
+    "leveldb",
+    "levelup"
+  ],
+  "engines": {
+    "node": ">=0.10.0",
+    "npm": ">=2.0.0"
+  },
+  "repository": "vweevers/level-iterator",
+  "bugs": "https://github.com/vweevers/level-iterator/issues",
+  "homepage": "https://github.com/vweevers/level-iterator"
+}
