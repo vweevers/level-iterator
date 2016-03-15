@@ -1,10 +1,9 @@
 'use strict';
 
 // level-iterator: decoding iterator for levelup instances
-// TODO: wait for db.isOpen()
 function iterator(db, opts) {
   if (!iterator.available(db)) {
-    throw new Error('level-iterator: no iterators available on db')
+    throw new Error('level-iterator: this database does not expose iterators')
   }
 
   // If db exposes iterators, assume they do the decoding
@@ -42,7 +41,19 @@ function iterator(db, opts) {
     })
   }
 
+  if (typeof iter.seek === 'function') {
+    wrapper.seek = function (target) {
+      iter.seek(codec.encodeKey(target, opts))
+    }
+  } else {
+    wrapper.seek = seekNotSupported
+  }
+
   return wrapper
+}
+
+function seekNotSupported() {
+  throw new Error('level-iterator: this iterator does not support seeking')
 }
 
 iterator.available = function(db) {
