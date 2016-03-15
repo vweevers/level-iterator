@@ -1,7 +1,7 @@
 'use strict';
 
 // level-iterator: decoding iterator for levelup instances
-function iterator(db, opts) {
+function iterator (db, opts) {
   if (!iterator.available(db)) {
     throw new Error('level-iterator: this database does not expose iterators')
   }
@@ -28,8 +28,8 @@ function iterator(db, opts) {
   const iter = db.db.iterator(opts)
   const wrapper = { end: iter.end.bind(iter) }
 
-  wrapper.next = function(cb) {
-    iter.next(function(err, key, value){
+  wrapper.next = function outerNext (cb) {
+    iter.next(function innerNext (err, key, value) {
       if (err) cb(err)
       else if (key === undefined && value === undefined) cb()
       else {
@@ -42,7 +42,7 @@ function iterator(db, opts) {
   }
 
   if (typeof iter.seek === 'function') {
-    wrapper.seek = function (target) {
+    wrapper.seek = function outerSeek (target) {
       iter.seek(codec.encodeKey(target, opts))
     }
   } else {
@@ -52,11 +52,11 @@ function iterator(db, opts) {
   return wrapper
 }
 
-function seekNotSupported() {
+function seekNotSupported () {
   throw new Error('level-iterator: this iterator does not support seeking')
 }
 
-iterator.available = function(db) {
+iterator.available = function (db) {
   if (typeof db.iterator === 'function') return true
   if (db._codec && db.db && typeof db.db.iterator === 'function') return true
   return false
